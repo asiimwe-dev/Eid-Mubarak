@@ -1,9 +1,16 @@
 // --- Initialization ---
-window.addEventListener('DOMContentLoaded', () => {
-    // Initialize Lucide icons
+function initializeIcons() {
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
+    } else {
+        console.log("Lucide not loaded yet, retrying...");
+        setTimeout(initializeIcons, 100);
     }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    // Initialize Lucide icons
+    initializeIcons();
 
     // Register GSAP Plugins
     if (typeof gsap !== 'undefined') {
@@ -167,6 +174,7 @@ btnRevealGift.addEventListener('click', () => {
         onComplete: () => {
             sceneLanding.classList.add('hidden');
             sceneChallenge.classList.remove('hidden');
+            initializeIcons(); // Ensure icons show in challenge
             gsap.to('#scene-challenge', { opacity: 1, duration: 1 });
         }
     });
@@ -271,6 +279,9 @@ btnRight.addEventListener('click', () => {
         
         // --- Initialize Typewriter Effect ---
         initTypewriter();
+        
+        // Re-initialize icons for the new scene
+        initializeIcons();
 
         // --- Improved Audio Trigger ---
         const audio = document.getElementById('bg-audio');
