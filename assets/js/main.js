@@ -237,18 +237,22 @@ btnWrong.addEventListener('click', (e) => {
     // Always shrink the wrong button
     wrongScale = Math.max(minWrongScale, wrongScale * 0.85);
     
-    // Grow the right button ONLY on desktop; keep it constant (1.0) on mobile
+    // Growth Logic:
     if (!isMobile) {
+        // Desktop: Grow continuously until max
         rightScale = Math.min(maxRightScale, rightScale * 1.15);
     } else {
-        rightScale = 1;
+        // Mobile: Grow exactly ONCE on the first click, then stop to stay within frames
+        if (wrongClickCount === 1) {
+            rightScale = 1.15; // A modest, safe size for all mobile screens
+        }
     }
     
     gsap.to(btnWrong, { 
         scale: wrongScale, 
         duration: 0.4, 
         ease: 'back.out(2)',
-        x: (Math.random() - 0.5) * (isMobile ? 20 : 50) // Subtle jitter for mobile
+        x: (Math.random() - 0.5) * (isMobile ? 20 : 50)
     });
     gsap.to(btnRight, { scale: rightScale, duration: 0.4, ease: 'back.out(2)' });
 
