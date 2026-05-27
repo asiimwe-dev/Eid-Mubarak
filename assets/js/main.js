@@ -101,23 +101,59 @@ const cheesyMessages = [
     "Wrong path! Follow your heart (to the right)!"
 ];
 
-btnWrong.addEventListener('click', () => {
+btnWrong.addEventListener('click', (e) => {
     wrongClickCount++;
     
+    // --- Emoji Explosion Effect ---
+    const emojiContainer = document.getElementById('emoji-container');
+    const emojis = ['❌', '🥺', '😅', '🙄', '💔', '👎', '🤷‍♂️'];
+    const rect = btnWrong.getBoundingClientRect();
+    
+    for (let i = 0; i < 8; i++) {
+        const emoji = document.createElement('div');
+        emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.position = 'fixed';
+        emoji.style.left = `${rect.left + rect.width / 2}px`;
+        emoji.style.top = `${rect.top + rect.height / 2}px`;
+        emoji.style.fontSize = `${Math.random() * 20 + 20}px`;
+        emoji.style.pointerEvents = 'none';
+        emojiContainer.appendChild(emoji);
+
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = Math.random() * 200 + 100;
+        const vx = Math.cos(angle) * velocity;
+        const vy = Math.sin(angle) * velocity;
+
+        gsap.to(emoji, {
+            x: vx,
+            y: vy - 200, // Gravity effect
+            opacity: 0,
+            rotation: Math.random() * 360,
+            duration: 1.5,
+            ease: 'power2.out',
+            onComplete: () => emoji.remove()
+        });
+    }
+
     // Shrink Wrong, Grow Right
     wrongScale *= 0.85;
     rightScale *= 1.15;
     
-    gsap.to(btnWrong, { scale: wrongScale, duration: 0.4, ease: 'back.out(2)' });
+    gsap.to(btnWrong, { 
+        scale: wrongScale, 
+        duration: 0.4, 
+        ease: 'back.out(2)',
+        x: (Math.random() - 0.5) * 50 // Random jitter
+    });
     gsap.to(btnRight, { scale: rightScale, duration: 0.4, ease: 'back.out(2)' });
 
     // Show Cheesy Tooltip
     cheesyTooltip.innerText = cheesyMessages[Math.min(wrongClickCount - 1, cheesyMessages.length - 1)];
-    gsap.to(cheesyTooltip, { opacity: 1, y: -10, duration: 0.3 });
+    gsap.to(cheesyTooltip, { opacity: 1, y: -20, scale: 1.2, duration: 0.3 });
     
     setTimeout(() => {
-        gsap.to(cheesyTooltip, { opacity: 0, y: 0, duration: 0.3 });
-    }, 2000);
+        gsap.to(cheesyTooltip, { opacity: 0, y: 0, scale: 1, duration: 0.3 });
+    }, 2500);
 });
 
 // Transition: Challenge -> Message Page
