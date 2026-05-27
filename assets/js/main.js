@@ -139,11 +139,21 @@ btnRight.addEventListener('click', () => {
         document.body.classList.remove('overflow-hidden'); // Ensure scrolling is enabled
         window.scrollTo(0, 0);
         
-        // Start Audio if not playing
+        // --- Improved Audio Trigger ---
         const audio = document.getElementById('bg-audio');
-        if (audio.paused) {
-            audio.play().catch(e => console.log("Audio play blocked by browser. User interaction needed."));
-        }
+        const audioBtn = document.getElementById('btn-audio-toggle');
+        const audioIcon = audioBtn.querySelector('i');
+
+        // Play audio and update UI state
+        audio.play().then(() => {
+            isPlaying = true;
+            audioIcon.setAttribute('data-lucide', 'pause');
+            lucide.createIcons();
+        }).catch(e => {
+            console.log("Autoplay prevented or audio error:", e);
+            // If it fails, we keep isPlaying as false so the user can click the toggle manually
+            isPlaying = false;
+        });
     })
     .to('#scene-message', { opacity: 1, duration: 1.5 });
 
