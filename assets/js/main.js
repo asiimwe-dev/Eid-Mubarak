@@ -1,7 +1,14 @@
-// --- Particle System (Gold Dust) ---
+// --- Particle System (Gold Dust with subtle Parallax) ---
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let particles = [];
+let mouseX = 0;
+let mouseY = 0;
+
+window.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX - window.innerWidth / 2) / 50;
+    mouseY = (e.clientY - window.innerHeight / 2) / 50;
+});
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -22,13 +29,15 @@ class Particle {
         this.speedX = Math.random() * 0.5 - 0.25;
         this.speedY = Math.random() * 0.5 - 0.25;
         this.opacity = Math.random() * 0.5 + 0.2;
+        this.parallaxFactor = Math.random() * 2 + 1;
     }
     update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x > canvas.width || this.x < 0 || this.y > canvas.height || this.y < 0) {
-            this.reset();
-        }
+        this.x += this.speedX + (mouseX * this.parallaxFactor * 0.1);
+        this.y += this.speedY + (mouseY * this.parallaxFactor * 0.1);
+        if (this.x > canvas.width) this.x = 0;
+        if (this.x < 0) this.x = canvas.width;
+        if (this.y > canvas.height) this.y = 0;
+        if (this.y < 0) this.y = canvas.height;
     }
     draw() {
         ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
@@ -40,7 +49,7 @@ class Particle {
 
 function initParticles() {
     particles = [];
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 120; i++) {
         particles.push(new Particle());
     }
 }
@@ -56,6 +65,69 @@ function animateParticles() {
 
 initParticles();
 animateParticles();
+
+// --- Heart Explosion Effect ---
+function createHeartExplosion() {
+    const container = document.getElementById('emoji-container');
+    const heartColors = ['#D4AF37', '#FF0000', '#FF69B4', '#Gold'];
+    
+    for (let i = 0; i < 50; i++) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.style.position = 'fixed';
+        heart.style.left = '50%';
+        heart.style.top = '50%';
+        heart.style.fontSize = `${Math.random() * 30 + 10}px`;
+        heart.style.zIndex = '1000';
+        container.appendChild(heart);
+
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = Math.random() * 400 + 200;
+        const vx = Math.cos(angle) * velocity;
+        const vy = Math.sin(angle) * velocity;
+
+        gsap.to(heart, {
+            x: vx,
+            y: vy,
+            opacity: 0,
+            scale: 0.2,
+            rotation: Math.random() * 720,
+            duration: 2,
+            ease: 'power3.out',
+            onComplete: () => heart.remove()
+        });
+    }
+}
+
+// --- Browser Tab Title Switcher ---
+let originalTitle = document.title;
+window.addEventListener('blur', () => {
+    document.title = "Come back, I miss you! ❤️";
+});
+window.addEventListener('focus', () => {
+    document.title = originalTitle;
+});
+
+// --- Typewriter Effect ---
+function initTypewriter() {
+    const texts = document.querySelectorAll('.typewriter-text');
+    texts.forEach(text => {
+        const content = text.innerHTML;
+        text.innerHTML = '';
+        gsap.to(text, {
+            scrollTrigger: {
+                trigger: text,
+                start: 'top 90%',
+            },
+            text: content,
+            duration: 2,
+            ease: 'none'
+        });
+    });
+}
+
+// Register GSAP Plugin
+gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
 // --- Scene Transitions & GSAP ---
 const sceneLanding = document.getElementById('scene-landing');
@@ -158,6 +230,9 @@ btnWrong.addEventListener('click', (e) => {
 
 // Transition: Challenge -> Message Page
 btnRight.addEventListener('click', () => {
+    // --- Trigger Heart Explosion ---
+    createHeartExplosion();
+
     // Intense Glow & Zoom Transition
     const tl = gsap.timeline();
     
@@ -175,6 +250,9 @@ btnRight.addEventListener('click', () => {
         document.body.classList.remove('overflow-hidden'); // Ensure scrolling is enabled
         window.scrollTo(0, 0);
         
+        // --- Initialize Typewriter Effect ---
+        initTypewriter();
+
         // --- Improved Audio Trigger ---
         const audio = document.getElementById('bg-audio');
         const audioBtn = document.getElementById('btn-audio-toggle');
@@ -187,7 +265,6 @@ btnRight.addEventListener('click', () => {
             lucide.createIcons();
         }).catch(e => {
             console.log("Autoplay prevented or audio error:", e);
-            // If it fails, we keep isPlaying as false so the user can click the toggle manually
             isPlaying = false;
         });
     })
