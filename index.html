@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eid Mubarak, My Love</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="bg-black text-white overflow-x-hidden font-['Poppins']">
+
+    <!-- Gold Dust Particles Canvas -->
+    <canvas id="particleCanvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></canvas>
+
+    <!-- Main Container -->
+    <main id="app-container" class="relative z-10 min-h-screen">
+        
+        <!-- SCENE 1: LANDING -->
+        <section id="scene-landing" class="h-screen flex flex-col items-center justify-center text-center px-4">
+            <div class="hero-content opacity-0">
+                <div class="mb-8 relative inline-block">
+                    <!-- Glowing Crescent Moon SVG -->
+                    <svg width="120" height="120" viewBox="0 0 100 100" class="filter drop-shadow-[0_0_15px_rgba(212,175,55,0.8)]">
+                        <path d="M50 10 A40 40 0 1 0 90 50 A30 30 0 1 1 50 10" fill="#D4AF37" />
+                    </svg>
+                    <div class="absolute -top-2 -right-2">
+                        <i data-lucide="sparkles" class="text-gold w-6 h-6 animate-pulse"></i>
+                    </div>
+                </div>
+                <h1 class="font-['Cinzel'] text-5xl md:text-7xl mb-6 text-gold-gradient">Eid Mubarak</h1>
+                <p class="text-xl md:text-2xl italic font-['Playfair_Display'] mb-12 text-gray-300">"To the one who brightens my entire world..."</p>
+                <button id="btn-reveal-gift" class="group relative px-10 py-4 bg-transparent border-2 border-[#D4AF37] text-[#D4AF37] font-semibold text-lg overflow-hidden transition-all duration-300 hover:text-black">
+                    <span class="relative z-10">Reveal My Gift</span>
+                    <div class="absolute inset-0 bg-[#D4AF37] transform translate-y-full transition-transform duration-300 group-hover:translate-y-0"></div>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCENE 2: THE CHALLENGE -->
+        <section id="scene-challenge" class="hidden h-screen flex flex-col items-center justify-center text-center px-4 opacity-0">
+            <h2 class="font-['Cinzel'] text-3xl md:text-4xl mb-12 text-gold">Choose Your Path, Gorgeous</h2>
+            <div class="flex flex-col md:flex-row gap-8 items-center justify-center w-full max-w-4xl">
+                <!-- Wrong Option -->
+                <div id="wrong-option-container" class="relative">
+                    <button id="btn-wrong" class="px-8 py-6 glass-card border border-white/20 rounded-xl transition-all duration-300 hover:border-[#D4AF37]/50 min-w-[280px]">
+                        <span class="block text-sm uppercase tracking-widest text-gray-400 mb-2">Option A</span>
+                        <span class="text-xl font-['Playfair_Display'] italic">A Normal Eid Wish</span>
+                    </button>
+                    <div id="cheesy-tooltip" class="absolute -top-16 left-1/2 -translate-x-1/2 bg-[#D4AF37] text-black px-4 py-2 rounded-lg text-sm font-bold opacity-0 transition-opacity pointer-events-none whitespace-nowrap">
+                        Wait, really? 🥺
+                    </div>
+                </div>
+
+                <span class="text-gold font-['Cinzel'] text-2xl">VS</span>
+
+                <!-- Right Option -->
+                <button id="btn-right" class="px-8 py-6 glass-card border border-[#D4AF37]/80 rounded-xl shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all duration-300 hover:shadow-[0_0_40px_rgba(212,175,55,0.4)] min-w-[280px]">
+                    <span class="block text-sm uppercase tracking-widest text-[#D4AF37] mb-2">Option B</span>
+                    <span class="text-xl font-['Playfair_Display'] italic">My Boyfriend's Heart</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCENE 3: THE MESSAGE PAGE -->
+        <section id="scene-message" class="hidden min-h-screen pt-24 pb-12 px-4 opacity-0">
+            <div class="max-w-4xl mx-auto space-y-24">
+                
+                <!-- The Letter -->
+                <div class="glass-card p-8 md:p-12 rounded-3xl border border-white/10 relative overflow-hidden" data-scroll-fade>
+                    <div class="absolute top-0 right-0 p-8 opacity-20">
+                        <i data-lucide="heart" class="w-32 h-32 text-[#D4AF37]"></i>
+                    </div>
+                    <h3 class="font-['Cinzel'] text-3xl text-gold mb-8 underline underline-offset-8">Hey Beautiful,</h3>
+                    <div class="prose prose-invert max-w-none text-lg leading-relaxed space-y-6 font-light text-gray-200">
+                        <p>As we celebrate this beautiful Eid al-Adha, I find myself reflecting on the greatest blessing in my life—you. Just as this day represents sacrifice and devotion, my devotion to you grows stronger with every passing moment.</p>
+                        <p>You aren't just my girlfriend; you are my peace, my home, and the answer to my most sincere prayers. Your smile is my favorite moon, and your heart is where I find my rest.</p>
+                        <p>I hope this Eid brings you as much joy as you have brought into my life. May Allah wrap His love around you and keep us together, today and forever.</p>
+                        <p class="pt-8 font-['Playfair_Display'] italic text-2xl text-gold">Happy Eid Mubarak, my queen. I love you beyond words.</p>
+                        <p class="font-semibold">— Your Always, Millan</p>
+                    </div>
+                </div>
+
+                <!-- Quranic Blessing -->
+                <div class="text-center space-y-8" data-scroll-fade>
+                    <div class="inline-block p-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent w-full h-px"></div>
+                    <div class="glass-card p-8 rounded-2xl border border-[#D4AF37]/30 max-w-2xl mx-auto">
+                        <i data-lucide="book-open" class="w-10 h-10 text-[#D4AF37] mx-auto mb-6"></i>
+                        <p class="font-['Cinzel'] text-2xl text-gold mb-4 leading-relaxed">"And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy..."</p>
+                        <p class="text-gray-400 italic">— Surah Ar-Rum (30:21)</p>
+                    </div>
+                    <div class="inline-block p-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent w-full h-px"></div>
+                </div>
+
+                <!-- Gallery Section -->
+                <div class="space-y-12" data-scroll-fade>
+                    <div class="text-center">
+                        <h4 class="font-['Cinzel'] text-3xl text-gold mb-2">Our Moments</h4>
+                        <p class="text-gray-400">A small window into the beauty you bring to my life.</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Personal Gallery Items -->
+                        <div class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden glass-card border border-white/10 group cursor-pointer">
+                            <img src="assets/images/my_baby.jpeg" alt="Our Moment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                                <p class="text-gold italic font-['Playfair_Display']">The way you look at the world...</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item aspect-[3/4] rounded-2xl overflow-hidden glass-card border border-white/10 group cursor-pointer">
+                            <img src="assets/images/rabia.jpeg" alt="Our Moment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                                <p class="text-gold italic font-['Playfair_Display']">Every second with you is a gift.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quote Slideshow -->
+                <div class="glass-card p-12 rounded-3xl border border-white/5 text-center relative overflow-hidden" data-scroll-fade>
+                    <div id="quote-carousel" class="relative h-32">
+                        <div class="quote-slide absolute inset-0 flex items-center justify-center transition-all duration-1000">
+                            <p class="text-2xl md:text-3xl italic font-['Playfair_Display'] text-gray-300 leading-relaxed">"In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine."</p>
+                        </div>
+                        <div class="quote-slide absolute inset-0 flex items-center justify-center transition-all duration-1000 opacity-0 translate-y-8">
+                            <p class="text-2xl md:text-3xl italic font-['Playfair_Display'] text-gray-300 leading-relaxed">"You are my today and all of my tomorrows."</p>
+                        </div>
+                        <div class="quote-slide absolute inset-0 flex items-center justify-center transition-all duration-1000 opacity-0 translate-y-8">
+                            <p class="text-2xl md:text-3xl italic font-['Playfair_Display'] text-gray-300 leading-relaxed">"I saw that you were perfect, and so I loved you. Then I saw that you were not perfect and I loved you even more."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final Blessing -->
+                <div class="text-center py-12" data-scroll-fade>
+                    <p class="font-['Cinzel'] text-xl text-gold tracking-widest uppercase mb-4">Forever Yours</p>
+                    <div class="flex justify-center gap-4">
+                        <i data-lucide="moon" class="text-gold w-6 h-6"></i>
+                        <i data-lucide="heart" class="text-[#D4AF37] w-6 h-6 fill-[#D4AF37]"></i>
+                        <i data-lucide="star" class="text-gold w-6 h-6"></i>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Audio Player Toggle -->
+    <div id="audio-player" class="fixed bottom-8 right-8 z-50">
+        <button id="btn-audio-toggle" class="p-4 bg-black/40 backdrop-blur-md border border-[#D4AF37]/40 rounded-full text-[#D4AF37] shadow-lg hover:bg-black/60 transition-all group">
+            <i data-lucide="music" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+        </button>
+        <audio id="bg-audio" loop>
+            <source src="assets/images/baby.m4a" type="audio/mp4">
+        </audio>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
