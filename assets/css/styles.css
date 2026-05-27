@@ -4,9 +4,20 @@
     --emerald-deep: #022C22;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background: radial-gradient(circle at center, var(--emerald-deep) 0%, #000 100%);
     min-height: 100vh;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+.content-visibility-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px;
 }
 
 .text-gold {

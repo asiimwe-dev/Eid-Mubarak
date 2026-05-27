@@ -207,15 +207,20 @@ btnWrong.addEventListener('click', (e) => {
         });
     }
 
-    // Shrink Wrong, Grow Right
-    wrongScale *= 0.85;
-    rightScale *= 1.15;
+    // --- Clamped Scaling for Mobile Safety ---
+    // Shrink Wrong (min 0.4), Grow Right (max 1.5 on mobile, 2.0 on desktop)
+    const isMobile = window.innerWidth < 768;
+    const maxRightScale = isMobile ? 1.4 : 1.8;
+    const minWrongScale = 0.4;
+
+    wrongScale = Math.max(minWrongScale, wrongScale * 0.85);
+    rightScale = Math.min(maxRightScale, rightScale * 1.15);
     
     gsap.to(btnWrong, { 
         scale: wrongScale, 
         duration: 0.4, 
         ease: 'back.out(2)',
-        x: (Math.random() - 0.5) * 50 // Random jitter
+        x: (Math.random() - 0.5) * 30 // Reduced jitter for mobile
     });
     gsap.to(btnRight, { scale: rightScale, duration: 0.4, ease: 'back.out(2)' });
 
