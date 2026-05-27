@@ -229,20 +229,26 @@ btnWrong.addEventListener('click', (e) => {
         });
     }
 
-    // --- Clamped Scaling for Mobile Safety ---
-    // Shrink Wrong (min 0.4), Grow Right (max 1.5 on mobile, 2.0 on desktop)
+    // --- Clamped Scaling Logic ---
     const isMobile = window.innerWidth < 768;
-    const maxRightScale = isMobile ? 1.4 : 1.8;
     const minWrongScale = 0.4;
+    const maxRightScale = 1.8;
 
+    // Always shrink the wrong button
     wrongScale = Math.max(minWrongScale, wrongScale * 0.85);
-    rightScale = Math.min(maxRightScale, rightScale * 1.15);
+    
+    // Grow the right button ONLY on desktop; keep it constant (1.0) on mobile
+    if (!isMobile) {
+        rightScale = Math.min(maxRightScale, rightScale * 1.15);
+    } else {
+        rightScale = 1;
+    }
     
     gsap.to(btnWrong, { 
         scale: wrongScale, 
         duration: 0.4, 
         ease: 'back.out(2)',
-        x: (Math.random() - 0.5) * 30 // Reduced jitter for mobile
+        x: (Math.random() - 0.5) * (isMobile ? 20 : 50) // Subtle jitter for mobile
     });
     gsap.to(btnRight, { scale: rightScale, duration: 0.4, ease: 'back.out(2)' });
 
