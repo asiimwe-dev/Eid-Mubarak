@@ -188,6 +188,38 @@ function nextQuote() {
 
 setInterval(nextQuote, 5000);
 
+// --- Radiance Slideshow ---
+const radianceSlides = document.querySelectorAll('.radiance-slide');
+let currentRadianceSlide = 0;
+
+function nextRadianceSlide() {
+    // Current out
+    gsap.to(radianceSlides[currentRadianceSlide], { 
+        opacity: 0, 
+        scale: 1.1, 
+        duration: 1.5,
+        ease: 'power2.inOut'
+    });
+    
+    // Increment
+    currentRadianceSlide = (currentRadianceSlide + 1) % radianceSlides.length;
+    
+    // Next in
+    gsap.fromTo(radianceSlides[currentRadianceSlide], 
+        { opacity: 0, scale: 0.9 }, 
+        { 
+            opacity: 1, 
+            scale: 1, 
+            duration: 1.5,
+            ease: 'power2.inOut'
+        }
+    );
+}
+
+// Start cycling once the message page is revealed
+// (We'll trigger this inside the btnRight listener or just let it run)
+setInterval(nextRadianceSlide, 6000);
+
 // --- Audio Player Toggle ---
 const btnAudioToggle = document.getElementById('btn-audio-toggle');
 const bgAudio = document.getElementById('bg-audio');
