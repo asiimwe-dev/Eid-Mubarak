@@ -1,3 +1,28 @@
+// --- Initialization ---
+window.addEventListener('DOMContentLoaded', () => {
+    // Initialize Lucide icons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+
+    // Register GSAP Plugins
+    if (typeof gsap !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger, TextPlugin);
+        
+        // Initial Landing Animation
+        gsap.to('.hero-content', { 
+            opacity: 1, 
+            y: -20, 
+            duration: 1.5, 
+            ease: 'power3.out',
+            delay: 0.5 
+        });
+    }
+
+    initParticles();
+    animateParticles();
+});
+
 // --- Particle System (Gold Dust with subtle Parallax) ---
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
@@ -63,9 +88,6 @@ function animateParticles() {
     requestAnimationFrame(animateParticles);
 }
 
-initParticles();
-animateParticles();
-
 // --- Heart Explosion Effect ---
 function createHeartExplosion() {
     const container = document.getElementById('emoji-container');
@@ -126,9 +148,6 @@ function initTypewriter() {
     });
 }
 
-// Register GSAP Plugin
-gsap.registerPlugin(ScrollTrigger, TextPlugin);
-
 // --- Scene Transitions & GSAP ---
 const sceneLanding = document.getElementById('scene-landing');
 const sceneChallenge = document.getElementById('scene-challenge');
@@ -138,11 +157,6 @@ const btnRevealGift = document.getElementById('btn-reveal-gift');
 const btnWrong = document.getElementById('btn-wrong');
 const btnRight = document.getElementById('btn-right');
 const cheesyTooltip = document.getElementById('cheesy-tooltip');
-
-// Initial Landing Animation
-window.addEventListener('load', () => {
-    gsap.to('.hero-content', { opacity: 1, y: -20, duration: 1.5, ease: 'power3.out' });
-});
 
 // Transition: Landing -> Challenge
 btnRevealGift.addEventListener('click', () => {
